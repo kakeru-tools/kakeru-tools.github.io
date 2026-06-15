@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>日本語 文章 読みやすさチェッカー（無料・登録不要）｜Kakeru</title>
+<meta name="description" content="文章を貼るだけで読みやすさを100点満点で判定。平均文長・漢字比率・長すぎる文を可視化し、具体的な直し方を提案します。登録・APIキー不要、ブラウザ内だけで計算（テキストはどこにも送信しません）。" />
+<link rel="canonical" href="https://kakeru-tools.github.io/checker/" />
+<link rel="icon" type="image/png" href="../icon-128.png" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="日本語 文章 読みやすさチェッカー（無料・登録不要）" />
+<meta property="og:description" content="貼るだけで読みやすさを採点。平均文長・漢字比率・長文を可視化し直し方を提案。送信なし・ブラウザ内処理。" />
+<meta property="og:url" content="https://kakeru-tools.github.io/checker/" />
+<meta property="og:image" content="https://kakeru-tools.github.io/icon-128.png" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="日本語 文章 読みやすさチェッカー（無料）" />
+<meta name="twitter:description" content="貼るだけで読みやすさを採点。送信なし・ブラウザ内処理。" />
+<style>
+  *,*::before,*::after{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  :root{--p:#2d8c5d;--pl:#41c47e;--fg:#1a1a1a;--muted:#666;--bg:#fafafa;--card:#fff;--border:#e6e6e6;--g:#2d8c5d;--a:#d99100;--r:#cf4444}
+  body{font-family:-apple-system,"Segoe UI","Hiragino Sans","Meiryo","Yu Gothic",sans-serif;color:var(--fg);background:var(--bg);line-height:1.8}
+  .wrap{max-width:820px;margin:0 auto;padding:0 18px}
+  header.site{background:var(--p);color:#fff;padding:13px 0}
+  header.site .wrap{display:flex;align-items:center;justify-content:space-between}
+  header.site a{color:#fff;text-decoration:none;font-weight:800;font-size:18px}
+  header.site nav a{font-weight:600;font-size:14px;opacity:.92;margin-left:16px}
+  h1{font-size:30px;margin:26px 0 6px;font-weight:800;letter-spacing:-.01em}
+  .sub{color:var(--muted);margin:0 0 18px}
+  textarea{width:100%;min-height:200px;border:1px solid var(--border);border-radius:12px;padding:14px;font-size:15px;font-family:inherit;line-height:1.8;resize:vertical}
+  .row{display:flex;gap:10px;align-items:center;margin:12px 0 0;flex-wrap:wrap}
+  button{background:var(--p);color:#fff;border:0;border-radius:999px;padding:11px 26px;font-weight:700;font-size:15px;cursor:pointer}
+  button.ghost{background:#fff;color:var(--p);border:2px solid var(--p)}
+  .priv{font-size:12px;color:#999}
+  .result{margin:24px 0;display:none}
+  .scorebox{display:flex;align-items:center;gap:22px;background:var(--card);border:1px solid var(--border);border-radius:16px;padding:22px}
+  .gauge{width:120px;height:120px;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff;flex:none}
+  .gauge .n{font-size:42px;font-weight:800;line-height:1;font-family:Consolas,monospace}
+  .gauge .u{font-size:12px;opacity:.9}
+  .verdict{font-size:18px;font-weight:700;margin:0 0 4px}
+  .verdict small{display:block;font-weight:400;color:var(--muted);font-size:14px;margin-top:4px}
+  .chips{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0}
+  .chip{background:#fff;border:1px solid var(--border);border-radius:10px;padding:10px 14px;font-size:14px;min-width:120px}
+  .chip b{display:block;font-size:20px;font-family:Consolas,monospace;margin-top:2px}
+  .hints{background:#fff;border:1px solid var(--border);border-radius:14px;padding:18px 20px;margin:8px 0}
+  .hints h3{margin:0 0 10px;font-size:16px}
+  .hints ul{margin:0;padding-left:20px}.hints li{margin:7px 0}
+  .ok{color:var(--g);font-weight:700}
+  .long{background:#fff;border:1px solid var(--border);border-radius:14px;padding:16px 20px;margin:14px 0}
+  .long h3{margin:0 0 8px;font-size:15px}.long li{margin:6px 0;color:#444;font-size:14px}
+  .how{margin:30px 0}
+  .how h2{font-size:20px;margin:0 0 8px}
+  .how p,.how li{color:#333}
+  .cta{margin:30px 0;background:#fff;border:2px solid var(--p);border-radius:16px;padding:22px}
+  .cta h2{margin:0 0 6px;font-size:19px;color:var(--p)}
+  .cta p{margin:6px 0;font-size:15px;color:#333}
+  .cta .links{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+  .cta a{display:inline-block;background:var(--p);color:#fff;text-decoration:none;font-weight:700;padding:9px 18px;border-radius:999px;font-size:14px}
+  footer{color:#999;font-size:13px;text-align:center;padding:36px 16px}
+  footer a{color:#777}
+  @media(max-width:520px){.scorebox{flex-direction:column;text-align:center}}
+</style>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebApplication","name":"日本語 文章 読みやすさチェッカー","url":"https://kakeru-tools.github.io/checker/","applicationCategory":"Utility","operatingSystem":"Web","inLanguage":"ja","offers":{"@type":"Offer","price":"0","priceCurrency":"JPY"},"description":"文章を貼るだけで読みやすさを採点し、平均文長・漢字比率・長文を可視化して直し方を提案する無料ツール。ブラウザ内処理で送信なし。","publisher":{"@type":"Organization","name":"Kakeru"}}
+</script>
+</head>
+<body>
+<header class="site"><div class="wrap"><a href="../">Kakeru</a><nav><a href="../">ツール一覧</a></nav></div></header>
+<div class="wrap">
+  <h1>日本語 文章 読みやすさチェッカー</h1>
+  <p class="sub">文章を貼って判定するだけ。平均文長・漢字比率・長すぎる文を見える化し、具体的な直し方を提案します。<strong>登録もAPIキーも不要</strong>。</p>
+
+  <textarea id="t" placeholder="ここに文章を貼り付けてください（note・ブログ・技術記事・メールなど、なんでも）。"></textarea>
+  <div class="row">
+    <button id="run">読みやすさを判定</button>
+    <button class="ghost" id="sample">サンプルを入れる</button>
+    <span class="priv">🔒 入力はあなたのブラウザ内だけで計算します。どこにも送信しません。</span>
+  </div>
+
+  <div class="result" id="result">
+    <div class="scorebox">
+      <div class="gauge" id="gauge"><span class="n" id="snum">–</span><span class="u">/ 100</span></div>
+      <div>
+        <p class="verdict" id="verdict"></p>
+        <div class="chips" id="chips"></div>
+      </div>
+    </div>
+    <div class="hints"><h3>改善のヒント</h3><ul id="hints"></ul></div>
+    <div class="long" id="longbox" style="display:none"><h3>長すぎる文（100文字超）</h3><ul id="longlist"></ul></div>
+  </div>
+
+  <section class="how">
+    <h2>読みやすさの目安</h2>
+    <ul>
+      <li><strong>1文の長さ</strong>：平均70文字を超えると読みにくくなりがち。読点や改行、文の分割で短く。</li>
+      <li><strong>漢字比率</strong>：おおむね20〜40%が読みやすい範囲。高すぎると硬く、低すぎると締まりがなく見えます（題材により最適は変わります）。</li>
+      <li><strong>長すぎる文</strong>：100文字を超える文は、一読で意味が取りにくくなります。2文に割れないか確認を。</li>
+    </ul>
+    <p>※ これは機械的な目安です。最終的な良し悪しは内容と読者で決まります。スコアは「直す箇所を見つける」ために使ってください。</p>
+  </section>
+
+  <section class="cta">
+    <h2>編集画面のまま、AIで直すなら</h2>
+    <p>この読みやすさ判定を<strong>note・Zenn・Qiitaの執筆画面の中で</strong>使えて、さらにタイトル案・冒頭文・章立て・（Proで）AIリライトまでできるChrome拡張を作っています（非公式・個人開発）。無料で毎日使えて、Proは月¥980。自分のClaude/OpenAIのAPIキーで動くBYOK設計です。</p>
+    <div class="links">
+      <a href="https://chromewebstore.google.com/detail/eghbbhlnfbmdndjnkbnjjiblmajfkkmk" target="_blank" rel="noopener">noteAI+</a>
+      <a href="https://chromewebstore.google.com/detail/fjnijcgebhmnocmmbajpdjdaiplajige" target="_blank" rel="noopener">Zenn-AI+</a>
+      <a href="https://chromewebstore.google.com/detail/ahemolcehmidofoblllkpheneeaejnfj" target="_blank" rel="noopener">Qiita-AI+</a>
+    </div>
+  </section>
+</div>
+<footer>© Kakeru ・ <a href="../">ツール一覧</a> ・ 読みやすさ判定はKakeruのChrome拡張と同じロジックを使用しています。</footer>
+
+<script>
+// 拡張(scorer.ts)と同一のルールベース判定を忠実に移植。完全クライアント側・送信なし。
+function analyze(text){
+  var totalChars = text.length;
+  var sentences = text.split(/[。．！？\n]+/).filter(function(s){return s.trim().length>0;});
+  var totalSentences = sentences.length;
+  var avg = totalSentences>0 ? totalChars/totalSentences : 0;
+  var kanji = (text.match(/[一-鿿]/g)||[]).length;
+  var kanjiRatio = totalChars>0 ? kanji/totalChars : 0;
+  var longs = sentences.filter(function(s){return s.length>100;});
+  var longCount = longs.length;
+  var hints = [];
+  if (avg>70) hints.push("1文が長め。読点や改行を増やすと読みやすくなります。");
+  if (kanjiRatio>0.4) hints.push("漢字比率が高め。ひらがな・カタカナを増やすと柔らかくなります。");
+  if (kanjiRatio<0.2 && totalChars>200) hints.push("漢字比率が低め。専門感を出すには適切な漢字使用も有効です。");
+  if (longCount>3) hints.push("100文字超の長文が "+longCount+" 箇所あります。分割を検討してください。");
+  var score = 100;
+  if (avg>70) score -= 15;
+  if (avg>100) score -= 15;
+  if (kanjiRatio>0.45) score -= 10;
+  if (longCount>3) score -= 10;
+  score = Math.max(0, score);
+  return {totalChars:totalChars, totalSentences:totalSentences, avg:avg, kanjiRatio:kanjiRatio, longs:longs, longCount:longCount, score:score, hints:hints};
+}
+function color(s){ return s>=80 ? getComputedStyle(document.documentElement).getPropertyValue('--g') : s>=60 ? getComputedStyle(document.documentElement).getPropertyValue('--a') : getComputedStyle(document.documentElement).getPropertyValue('--r'); }
+function verdict(s){ return s>=80 ? "読みやすい文章です" : s>=60 ? "おおむね読みやすい（直せる箇所あり）" : "読みにくい箇所が多めです"; }
+function esc(x){ var d=document.createElement('div'); d.textContent=x; return d.innerHTML; }
+function render(r){
+  document.getElementById('result').style.display='block';
+  var g=document.getElementById('gauge'); g.style.background=color(r.score).trim();
+  document.getElementById('snum').textContent=r.score;
+  document.getElementById('verdict').innerHTML=esc(verdict(r.score))+'<small>機械的な目安です。直す箇所探しに使ってください。</small>';
+  var chips=[['文字数',r.totalChars],['文の数',r.totalSentences],['平均文長',r.avg.toFixed(0)+'字'],['漢字比率',(r.kanjiRatio*100).toFixed(0)+'%'],['長すぎる文',r.longCount+'箇所']];
+  document.getElementById('chips').innerHTML=chips.map(function(c){return '<div class="chip">'+c[0]+'<b>'+c[1]+'</b></div>';}).join('');
+  var h=document.getElementById('hints');
+  h.innerHTML = r.hints.length ? r.hints.map(function(x){return '<li>'+esc(x)+'</li>';}).join('') : '<li class="ok">指摘はありません。読みやすい文章です。</li>';
+  var lb=document.getElementById('longbox'), ll=document.getElementById('longlist');
+  if(r.longs.length){ lb.style.display='block'; ll.innerHTML=r.longs.slice(0,5).map(function(s){var t=s.trim();return '<li>'+esc(t.length>80?t.slice(0,80)+'…':t)+'（'+t.length+'字）</li>';}).join(''); }
+  else { lb.style.display='none'; }
+}
+function run(){
+  var t=document.getElementById('t').value.trim();
+  if(t.length<10){ alert('10文字以上の文章を入れてください。'); return; }
+  render(analyze(t));
+  document.getElementById('result').scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+document.getElementById('run').addEventListener('click', run);
+document.getElementById('sample').addEventListener('click', function(){
+  document.getElementById('t').value='本稿では当該事業における収益構造の抜本的改革に関する基本方針並びに具体的施策の概要について関係各部門の意見を十分に踏まえた上で総合的見地から検討を行った結果を報告するとともに今後の課題を整理するものである。前述の通り市場環境の急速な変化に対応するためには従来の枠組みに固執することなく柔軟かつ機動的な意思決定が不可欠であり組織横断的な連携体制の早期構築が喫緊の課題であると考えられる。加えて顧客接点の多様化に伴い従来型の画一的な対応では顧客満足度の維持向上は困難であるため個別最適化された施策の継続的な実行と効果検証の仕組みの整備が強く求められている状況にある。以上の認識を前提として次年度以降の重点施策を策定し関係部門間で認識を共有した上で着実に推進していく所存である。';
+  run();
+});
+</script>
+</body>
+</html>
