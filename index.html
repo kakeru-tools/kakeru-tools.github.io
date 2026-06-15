@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Kakeru — 書く人のためのAI執筆ツール（Chrome拡張）</title>
+<meta name="description" content="note・Zenn・Qiita の執筆画面に、AI執筆補助サイドバーを足すChrome拡張。タイトル・冒頭・構成・読みやすさをエディタのまま。あなた自身のAPIキーで動くBYOK設計（本文もキーも預かりません）。個人開発のKakeruが作っています。" />
+<link rel="icon" type="image/png" href="icon-128.png" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Kakeru — 書く人のためのAI執筆ツール" />
+<meta property="og:description" content="note・Zenn・Qiita の執筆画面にAI補助サイドバー。自分のAPIキーで動くBYOK設計で、本文もキーも預かりません。" />
+<meta property="og:url" content="https://kakeru-tools.github.io/" />
+<meta property="og:image" content="https://kakeru-tools.github.io/icon-128.png" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="Kakeru — 書く人のためのAI執筆ツール" />
+<meta name="twitter:description" content="note・Zenn・Qiita の執筆画面にAI補助サイドバー。自分のAPIキーで動くBYOK設計。" />
+<style>
+  *,*::before,*::after{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  :root{--p:#2d8c5d;--pl:#41c47e;--fg:#1a1a1a;--muted:#555;--bg:#fafafa;--card:#fff;--border:#e7e7e7}
+  body{font-family:-apple-system,"Segoe UI","Hiragino Sans","Meiryo","Yu Gothic",sans-serif;color:var(--fg);background:var(--bg);line-height:1.8}
+  .wrap{max-width:920px;margin:0 auto;padding:0 20px}
+  header{background:linear-gradient(135deg,var(--pl),var(--p));color:#fff;text-align:center;padding:84px 20px 64px}
+  header h1{font-size:52px;margin:0 0 10px;font-weight:800;letter-spacing:-.03em}
+  header .tagline{font-size:19px;opacity:.96;max-width:640px;margin:0 auto 8px}
+  header .sub{font-size:15px;opacity:.85;max-width:600px;margin:0 auto}
+  section{padding:56px 0}
+  h2{font-size:28px;text-align:center;margin:0 0 8px;font-weight:800}
+  .lead{text-align:center;color:var(--muted);max-width:620px;margin:0 auto 36px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px}
+  .card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:26px;display:flex;flex-direction:column}
+  .card .badge{font-size:12px;color:var(--p);font-weight:700;letter-spacing:.04em}
+  .card h3{font-size:22px;margin:6px 0 8px}
+  .card p{color:var(--muted);font-size:15px;margin:0 0 18px;flex:1}
+  .card .links{display:flex;gap:10px;flex-wrap:wrap}
+  .btn{display:inline-block;padding:10px 20px;border-radius:999px;text-decoration:none;font-weight:700;font-size:14px}
+  .btn.primary{background:var(--p);color:#fff}
+  .btn.ghost{border:2px solid var(--p);color:var(--p)}
+  .card.soon{opacity:.72}
+  .why{background:#fff;border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+  .why .grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:24px;margin-top:8px}
+  .why .item h3{font-size:17px;margin:0 0 6px;color:var(--p)}
+  .why .item p{color:var(--muted);font-size:14px;margin:0}
+  footer{text-align:center;color:#999;font-size:13px;padding:40px 20px}
+  footer a{color:#777}
+  @media(max-width:560px){header h1{font-size:40px}}
+</style>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Organization","name":"Kakeru","url":"https://kakeru-tools.github.io/","description":"note・Zenn・Qiita 向けのAI執筆補助Chrome拡張を作る個人開発プロジェクト。BYOK（自分のAPIキーで動く）設計。","brand":["noteAI+","Zenn-AI+","Qiita-AI+"]}
+</script>
+</head>
+<body>
+<header>
+  <h1>Kakeru</h1>
+  <p class="tagline">書く人のための、AI執筆ツール。</p>
+  <p class="sub">note・Zenn・Qiita の執筆画面に、AIの提案サイドバーをそっと足すChrome拡張。別タブに移動せず、書く流れのまま使えます。</p>
+</header>
+
+<section>
+  <div class="wrap">
+    <h2>3つのツール</h2>
+    <p class="lead">それぞれのプラットフォームに最適化したAI執筆補助。すべて無料で毎日使えて、Proは月額¥980です。</p>
+    <div class="grid">
+      <div class="card">
+        <span class="badge">note.com</span>
+        <h3>noteAI+</h3>
+        <p>タイトル候補10案・冒頭文・章立て・読みやすさ評価・SEOキーワードチェックを、noteの執筆画面のまま。</p>
+        <div class="links">
+          <a class="btn primary" href="https://chromewebstore.google.com/detail/eghbbhlnfbmdndjnkbnjjiblmajfkkmk" target="_blank" rel="noopener">Chromeに追加</a>
+          <a class="btn ghost" href="https://kakeru-tools.github.io/noteai-plus-site/">詳しく</a>
+        </div>
+      </div>
+      <div class="card">
+        <span class="badge">Zenn</span>
+        <h3>Zenn-AI+</h3>
+        <p>技術タイトル候補・構成・コードレビュー・読みやすさ・技術SEOチェック。開発者の技術記事に特化。</p>
+        <div class="links">
+          <a class="btn primary" href="https://chromewebstore.google.com/detail/fjnijcgebhmnocmmbajpdjdaiplajige" target="_blank" rel="noopener">Chromeに追加</a>
+          <a class="btn ghost" href="https://kakeru-tools.github.io/zenn-ai-plus-site/">詳しく</a>
+        </div>
+      </div>
+      <div class="card">
+        <span class="badge">Qiita</span>
+        <h3>Qiita-AI+</h3>
+        <p>タイトル候補＋LGTM予測・冒頭文・章立て・タグ最適化・読みやすさ評価。LGTMされる記事づくりに。</p>
+        <div class="links">
+          <a class="btn primary" href="https://chromewebstore.google.com/detail/ahemolcehmidofoblllkpheneeaejnfj" target="_blank" rel="noopener">Chromeに追加</a>
+          <a class="btn ghost" href="https://kakeru-tools.github.io/qiita-ai-plus-site/">詳しく</a>
+        </div>
+      </div>
+      <div class="card soon">
+        <span class="badge">Substack（英語）</span>
+        <h3>Substack-AI+</h3>
+        <p>英語ニュースレター向けのAI執筆補助。現在準備中です。</p>
+        <div class="links">
+          <a class="btn ghost" href="https://kakeru-tools.github.io/substack-ai-plus-site/">詳しく</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="why">
+  <div class="wrap">
+    <h2>Kakeruの考え方</h2>
+    <p class="lead">「便利だけど、自分の文章をどこに送っているか分からない」——それが嫌で、こういう設計にしました。</p>
+    <div class="grid3">
+      <div class="item">
+        <h3>あなたのAPIキーで動く（BYOK）</h3>
+        <p>Anthropic（Claude）かOpenAIの、あなた自身のAPIキーで動きます。AIへの送信は、あなたがボタンを押した瞬間だけ・あなたのキーで直接。</p>
+      </div>
+      <div class="item">
+        <h3>本文もキーも預かりません</h3>
+        <p>APIキーも記事の本文も、あなたのブラウザのローカルにだけ保存。拡張の運営者のサーバーには送られません。</p>
+      </div>
+      <div class="item">
+        <h3>透明な料金</h3>
+        <p>拡張の料金にAI生成のマージンは乗せていません。AI利用料はご自身のAPI契約にそのまま（Claude Haikuなら1記事 数円〜数十円程度）。無料は毎日、Proは月¥980。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>Kakeru は個人開発のプロジェクトです。各拡張は note / Zenn / Qiita の公式製品ではありません。</p>
+  <p><a href="https://github.com/kakeru-tools" target="_blank" rel="noopener">GitHub</a></p>
+</footer>
+</body>
+</html>
